@@ -50,7 +50,11 @@ void Interpreter::Interpret(std::string fname, std::vector <Lexer::Token>& token
 									break;
 								}
 								case Lexer::TokenType::ArgumentString: {
-									language.stack.push_back(stringAddresses[j - i]);
+									uint8_t arr[4];
+									memcpy(arr, &stringAddresses[j - i], sizeof(stringAddresses[j - i]));
+									for (size_t i = 0; i < sizeof(arr); ++i) {
+										language.stack.push_back(arr[i]);
+									}
 									++ argCount;
 									break;
 								}

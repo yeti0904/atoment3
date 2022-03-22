@@ -39,8 +39,13 @@ void ATM::Language::Language_Components::Init() {
 	/****** init functions ******/
 	/****************************/
 	AddBuiltInFunction("test", BuiltIn::Test);
-	AddBuiltInFunction("push", BuiltIn::Push);
-	AddBuiltInFunction("pop", BuiltIn::Pop);
+	AddBuiltInFunction("push32", BuiltIn::Push32);
+	AddBuiltInFunction("pop32", BuiltIn::Pop32);
+	AddBuiltInFunction("putchar", BuiltIn::Putchar);
+	AddBuiltInFunction("puts", BuiltIn::Puts);
+	AddBuiltInFunction("push8", BuiltIn::Push8);
+	AddBuiltInFunction("pop8", BuiltIn::Pop8);
+	AddBuiltInFunction("printf", BuiltIn::Printf);
 }
 
 uint32_t ATM::Language::Language_Components::GetIntFromPointer(uint32_t ptr) {
@@ -52,4 +57,32 @@ uint32_t ATM::Language::Language_Components::GetIntFromPointer(uint32_t ptr) {
 	memcpy(&ret, bytes, sizeof(bytes));
 
 	return ret;
+}
+
+std::string ATM::Language::Language_Components::GetAndPopString(uint32_t ptr) {
+	std::string ret;
+	for (size_t i = ptr; stack[i] != 0; ++i) {
+		if (i >= stack.size()) {
+			printf("GetAndPopString: Stack overflow");
+			exit(1);
+		}
+		ret += stack[i];
+	}
+	for (size_t i = 0; i <= ret.length(); ++i) {
+		stack.pop_back();
+	}
+	return ret;
+}
+
+void ATM::Language::Language_Components::WriteByteToPointer(uint8_t num, uint32_t ptr) {
+	stack[ptr] = num;
+}
+
+void ATM::Language::Language_Components::WriteIntToPointer(uint32_t num, uint32_t ptr) {
+	uint8_t bytes[4];
+	memcpy(bytes, &num, sizeof(num));
+
+	for (size_t i = 0; i < sizeof(bytes); ++i) {
+		WriteByteToPointer(bytes[i], ptr + i);
+	}
 }

@@ -22,6 +22,9 @@ namespace ATM {
 				void                                       Init();
 				void                                       AddBuiltInFunction(std::string name, BuiltInFunction function);
 				uint32_t                                   GetIntFromPointer(uint32_t ptr);
+				std::string                                GetAndPopString(uint32_t ptr);
+				void                                       WriteByteToPointer(uint8_t num, uint32_t ptr);
+				void                                       WriteIntToPointer(uint32_t num, uint32_t ptr);
 		};
 	}
 }
