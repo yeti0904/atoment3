@@ -1,6 +1,5 @@
 #include "builtin.hh"
-#include "lexer.hh"
-// TODO: remove the above include
+#include "util.hh"
 
 void BuiltIn::Test(ATM::Language::Language_Components& language) {
 	puts("Welcome to Atoment 3");
@@ -11,7 +10,6 @@ void BuiltIn::Test(ATM::Language::Language_Components& language) {
 }
 
 void BuiltIn::Push32(ATM::Language::Language_Components& language) {
-	// we dont need to do anything because the arguments are already pushed to the stack
 	(void) language;
 }
 
@@ -134,6 +132,84 @@ void BuiltIn::Printf(ATM::Language::Language_Components& language) {
 			}
 		}
 	}
+	while (language.stack.size() >= language.variables["MEM_ARGV"].value) {
+		language.stack.pop_back();
+	}
+}
+
+void BuiltIn::Add(ATM::Language::Language_Components& language) {
+	uint32_t num2 = language.PopInt();
+	uint32_t num1 = language.PopInt();
+
+	uint32_t result = Util::SwapEndian(num1 + num2);
+
+	language.WriteIntToPointer(result, language.variables["MEM_ACC"].value);
+
+	while (language.stack.size() >= language.variables["MEM_ARGV"].value) {
+		language.stack.pop_back();
+	}
+}
+
+void BuiltIn::Sub(ATM::Language::Language_Components& language) {
+	uint32_t num2 = language.PopInt();
+	uint32_t num1 = language.PopInt();
+
+	uint32_t result = Util::SwapEndian(num1 - num2);
+
+	language.WriteIntToPointer(result, language.variables["MEM_ACC"].value);
+
+	while (language.stack.size() >= language.variables["MEM_ARGV"].value) {
+		language.stack.pop_back();
+	}
+}
+
+void BuiltIn::Mul(ATM::Language::Language_Components& language) {
+	uint32_t num2 = language.PopInt();
+	uint32_t num1 = language.PopInt();
+
+	uint32_t result = Util::SwapEndian(num1 * num2);
+
+	language.WriteIntToPointer(result, language.variables["MEM_ACC"].value);
+
+	while (language.stack.size() >= language.variables["MEM_ARGV"].value) {
+		language.stack.pop_back();
+	}
+}
+
+void BuiltIn::Div(ATM::Language::Language_Components& language) {
+	uint32_t num2 = language.PopInt();
+	uint32_t num1 = language.PopInt();
+
+	uint32_t result = Util::SwapEndian(num1 / num2);
+
+	language.WriteIntToPointer(result, language.variables["MEM_ACC"].value);
+
+	while (language.stack.size() >= language.variables["MEM_ARGV"].value) {
+		language.stack.pop_back();
+	}
+}
+
+void BuiltIn::Pow(ATM::Language::Language_Components& language) {
+	uint32_t num2 = language.PopInt();
+	uint32_t num1 = language.PopInt();
+
+	uint32_t result = Util::SwapEndian(pow(num1, num2));
+
+	language.WriteIntToPointer(result, language.variables["MEM_ACC"].value);
+
+	while (language.stack.size() >= language.variables["MEM_ARGV"].value) {
+		language.stack.pop_back();
+	}
+}
+
+void BuiltIn::Mod(ATM::Language::Language_Components& language) {
+	uint32_t num2 = language.PopInt();
+	uint32_t num1 = language.PopInt();
+
+	uint32_t result = Util::SwapEndian(num1 % num2);
+
+	language.WriteIntToPointer(result, language.variables["MEM_ACC"].value);
+
 	while (language.stack.size() >= language.variables["MEM_ARGV"].value) {
 		language.stack.pop_back();
 	}

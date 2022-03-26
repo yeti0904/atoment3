@@ -97,6 +97,7 @@ std::vector <Lexer::Token> Lexer::Lex(std::string& fname, const std::string& sou
 				reading = "";
 				break;
 			}
+			case '?':   // if statement
 			case '\0':  // end of file
 			case ',':   // argument seperator
 			case ';': { // end of statement
@@ -158,7 +159,12 @@ std::vector <Lexer::Token> Lexer::Lex(std::string& fname, const std::string& sou
 				}
 				if (source[i] == ';') {
 					// we have an end of statement
-					ret.push_back(Token(TokenType::EndOfStatement, reading, line, column));
+					ret.push_back(Token(TokenType::EndOfStatement, "", line, column));
+					break;
+				}
+				else if (source[i] == '?') {
+					// if statement
+					ret.push_back(Token(TokenType::If, "", line, column));
 					break;
 				}
 				break;

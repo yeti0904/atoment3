@@ -4,6 +4,9 @@ void Interpreter::Interpret(std::string fname, std::vector <Lexer::Token>& token
 	for (size_t i = 0; i < tokens.size(); ++i) {
 		switch (tokens[i].type) {
 			case Lexer::TokenType::FunctionCall: {
+				if (tokens[i].content == "return") {
+					return;
+				}
 				if (language.functions[tokens[i].content].exists) {
 					if (language.functions[tokens[i].content].builtin) {
 						// push arguments to stack
@@ -40,7 +43,7 @@ void Interpreter::Interpret(std::string fname, std::vector <Lexer::Token>& token
 									break;
 								}
 								case Lexer::TokenType::ArgumentInteger: {
-									uint32_t num = std::stoi(tokens[j].content);
+									uint32_t num = atoi(tokens[j].content.c_str());
 									uint8_t  arr[4];
 									memcpy(arr, &num, sizeof(num));
 									for (size_t i = 0; i<sizeof(arr); ++i) {

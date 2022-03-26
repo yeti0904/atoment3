@@ -2,6 +2,7 @@
 
 // C standard libraries
 #include <stdio.h>
+#include <math.h>
 #include <ctype.h>
 #include <string.h>
 
@@ -11,3 +12,6 @@
 #include <fstream>
 #include <algorithm>
 #include <unordered_map>
+
+// libraries with bits and bytes or something
+#include <arpa/inet.h>

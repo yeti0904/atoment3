@@ -46,6 +46,12 @@ void ATM::Language::Language_Components::Init() {
 	AddBuiltInFunction("push8", BuiltIn::Push8);
 	AddBuiltInFunction("pop8", BuiltIn::Pop8);
 	AddBuiltInFunction("printf", BuiltIn::Printf);
+	AddBuiltInFunction("add", BuiltIn::Add);
+	AddBuiltInFunction("sub", BuiltIn::Sub);
+	AddBuiltInFunction("mul", BuiltIn::Mul);
+	AddBuiltInFunction("div", BuiltIn::Div);
+	AddBuiltInFunction("pow", BuiltIn::Pow);
+	AddBuiltInFunction("mod", BuiltIn::Mod);
 }
 
 uint32_t ATM::Language::Language_Components::GetIntFromPointer(uint32_t ptr) {
@@ -85,4 +91,12 @@ void ATM::Language::Language_Components::WriteIntToPointer(uint32_t num, uint32_
 	for (size_t i = 0; i < sizeof(bytes); ++i) {
 		WriteByteToPointer(bytes[i], ptr + i);
 	}
+}
+
+uint32_t ATM::Language::Language_Components::PopInt() {
+	uint32_t ret = GetIntFromPointer(stack.size() - 4);
+	for (size_t i = 0; i < 4; ++i) {
+		stack.pop_back();
+	}
+	return ret;
 }
